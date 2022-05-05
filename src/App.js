@@ -1,15 +1,16 @@
 // Import dependencies
+import * as Realm from "realm-web";
 import React, { useRef, useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 import * as cocossd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 import "./App.css";
-import { drawRect } from "./utilities";
 
 function App() {
+  
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-
+ 
   // Main function
   const runCoco = async () => {
     const net = await cocossd.load();
@@ -20,6 +21,47 @@ function App() {
     }, 10);
   };
 
+   // Realm login
+   const mongoDBRealm = async (text,perc,x, y, width, height) => {
+    // add your Realm App Id to the .env.local file
+    const REALM_APP_ID = "object-detection-crzxn";
+    const app = new Realm.App({ id: REALM_APP_ID });
+    const credentials = Realm.Credentials.anonymous();
+    try {
+      const user = await app.logIn(credentials);
+      await user.functions.updateObject(text, perc , x , y , width , height);
+    } catch (error) {
+      console.error(error);
+    }
+ };
+
+  const drawRect = (detections, ctx) =>{
+    // Loop through each prediction
+    detections.forEach(prediction => {
+  
+      // Extract boxes and classes
+      console.log(prediction);
+      const [x, y, width, height] = prediction['bbox']; 
+      const text = prediction['class']; 
+      const score = prediction['score'];
+      const scorePerc = Number.parseFloat(score * 100).toFixed(0);
+      const perc = scorePerc + "%";
+      const textScore = text + " " + perc;
+      mongoDBRealm(text,perc,x, y, width, height)
+     
+      // Set styling
+      const color = Math.floor(Math.random()*16777215).toString(16);
+      ctx.strokeStyle = '#' + color
+      ctx.font = '18px Arial';
+  
+      // Draw rectangles and text
+      ctx.beginPath();   
+      ctx.fillStyle = '#' + color
+      ctx.fillText(textScore, x, y);
+      ctx.rect(x, y, width, height); 
+      ctx.stroke();
+    });
+  };
   const detect = async (net) => {
     // Check data is available
     if (
@@ -49,7 +91,10 @@ function App() {
     }
   };
 
-  useEffect(()=>{runCoco()},[]);
+  useEffect(()=>{
+    runCoco()
+    //mongoDBRealm()
+  },[]);
 
   return (
     <div className="App">

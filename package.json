@@ -12,7 +12,9 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
-    "react-webcam": "^5.2.0"
+    "react-webcam": "^5.2.0",
+    "realm": "^10.16.0",
+    "realm-web": "^1.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
