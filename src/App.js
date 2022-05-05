@@ -24,7 +24,7 @@ function App() {
    // Realm login
    const mongoDBRealm = async (text,perc,x, y, width, height) => {
     // add your Realm App Id to the .env.local file
-    const REALM_APP_ID = "object-detection-crzxn";
+    const REALM_APP_ID = "<<Realm app id>>";
     const app = new Realm.App({ id: REALM_APP_ID });
     const credentials = Realm.Credentials.anonymous();
     try {
