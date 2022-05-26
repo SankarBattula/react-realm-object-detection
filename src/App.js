@@ -96,6 +96,9 @@ function App() {
     //mongoDBRealm()
   },[]);
 
+  const videoConstraints = {
+      facingMode: { exact: "environment" }
+  };
 
   return (
     <div className="App">
@@ -103,7 +106,7 @@ function App() {
         <Webcam
           ref={webcamRef}
           muted={true} 
-          videoConstraints = {{exact: "environment"}}
+          videoConstraints = {videoConstraints}
           style={{
             position: "absolute",
             marginLeft: "auto",
@@ -112,8 +115,8 @@ function App() {
             right: 0,
             textAlign: "center",
             zindex: 9,
-            width: 640,
-            height: 480,
+            width: 720,
+            height: 1080,
             
           }}
         />
@@ -125,11 +128,12 @@ function App() {
             marginLeft: "auto",
             marginRight: "auto",
             left: 0,
+            top : 0,
             right: 0,
             textAlign: "center",
-            zindex: 8,
-            width: 640,
-            height: 480,
+            zindex: 9,
+            width: 700,
+            height: 600,
           }}
         />
       </header>
