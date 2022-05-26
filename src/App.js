@@ -29,7 +29,7 @@ function App() {
     const credentials = Realm.Credentials.anonymous();
     try {
       const user = await app.logIn(credentials);
-      await user.functions.updateObject(text, perc , x , y , width , height);
+      await user.functions.update(text, perc , x , y , width , height);
     } catch (error) {
       console.error(error);
     }
